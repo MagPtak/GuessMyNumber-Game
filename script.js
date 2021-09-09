@@ -1,43 +1,59 @@
 'use strict';
 
-const secretNumber = Math.trunc(Math.random() * 20) + 1;
-let score = 20;
+const showMessage = function (message) {
+  document.querySelector('.message').textContent = message;
+};
 
-document.querySelector('.number').textContent = secretNumber;
+const showScore = function (score) {
+  document.querySelector('.score').textContent = score;
+};
+
+let secretNumber = Math.trunc(Math.random() * 20) + 1;
+let score = 20;
+let highscore = 0;
 
 document.querySelector('.check').addEventListener('click', function () {
   const guess = Number(document.querySelector('.guess').value);
-  console.log(guess, typeof guess);
 
   //Brak wartosci w inpucie
   if (!guess) {
-    document.querySelector('.message').textContent = 'No number';
+    showMessage('No number');
 
     //Gracz wygrywa
   } else if (guess === secretNumber) {
-    document.querySelector('.message').textContent = 'Correct number';
+    showMessage('Correct number');
+    document.querySelector('.number').textContent = secretNumber;
     document.querySelector('body').style.backgroundColor = 'green';
     document.querySelector('.number').style.width = '30rem';
-
-    //Liczba zbyt wysoka
-  } else if (guess > secretNumber) {
-    if (score > 1) {
-      document.querySelector('.message').textContent = 'Too high!';
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = 'You lost';
-      document.querySelector('.score').textContent = 0;
+    if (score > highscore) {
+      highscore = score;
+      document.querySelector('.highscore').textContent = highscore;
     }
-    //Liczba zbyt niska
-  } else if (guess < secretNumber) {
+
+    //Podana liczba jest nieprawidłowa
+  } else if (guess !== secretNumber) {
     if (score > 1) {
-      document.querySelector('.message').textContent = 'Too low!';
+      showMessage(guess > secretNumber ? 'Too high' : 'Too low');
       score--;
-      document.querySelector('.score').textContent = score;
+      showScore(score);
     } else {
-      document.querySelector('.message').textContent = 'You lost';
+      showMessage('You lost');
       document.querySelector('.score').textContent = 0;
     }
   }
+});
+
+//Button again
+document.querySelector('.again').addEventListener('click', function () {
+  //   location.reload();
+
+  score = 20;
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
+
+  showMessage('Start guessing');
+  showScore(score);
+  document.querySelector('.number').textContent = '?';
+  document.querySelector('.guess').value = '';
+  document.querySelector('body').style.backgroundColor = 'black';
+  document.querySelector('.number').style.width = '15rem';
 });
