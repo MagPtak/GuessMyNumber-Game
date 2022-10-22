@@ -15,11 +15,9 @@ let highscore = 0;
 document.querySelector('.check').addEventListener('click', function () {
   const guess = Number(document.querySelector('.guess').value);
 
-  //Brak wartosci w inpucie
   if (!guess) {
     showMessage('No number');
 
-    //Gracz wygrywa
   } else if (guess === secretNumber) {
     showMessage('Correct number');
     document.querySelector('.number').textContent = secretNumber;
@@ -30,7 +28,6 @@ document.querySelector('.check').addEventListener('click', function () {
       document.querySelector('.highscore').textContent = highscore;
     }
 
-    //Podana liczba jest nieprawidłowa
   } else if (guess !== secretNumber) {
     if (score > 1) {
       showMessage(guess > secretNumber ? 'Too high' : 'Too low');
@@ -43,9 +40,7 @@ document.querySelector('.check').addEventListener('click', function () {
   }
 });
 
-//Button again
 document.querySelector('.again').addEventListener('click', function () {
-  //   location.reload();
 
   score = 20;
   secretNumber = Math.trunc(Math.random() * 20) + 1;
